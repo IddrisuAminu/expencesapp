@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { AppProvider } from './context/AppContext';
+import {Route, Redirect} from "react-router-dom";
+import Home from "./screens/Home";
+import LoginScreen from './screens/LoginScreen';
+import Header from './components/Header';
+import RegisterUserScreen from './screens/RegisterUserScreen';
+import { Container } from 'react-bootstrap';
+import "./bootstrap.min.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+
+	let user = JSON.parse(localStorage.getItem("userInfo"))
+	
+	return (
+		
+		<AppProvider>
+			<Header/>
+			<Container>
+			<Route path="/" exact>
+				{user ? <Redirect to="/home"/>:<Redirect to="/login"/>}
+</Route>
+			<Route path="/login" component={LoginScreen}/>
+            <Route path="/home" component={Home} exact />
+			<Route path="/register" component={RegisterUserScreen}/>
+			</Container>
+		</AppProvider>
+	);
+};
 
 export default App;
